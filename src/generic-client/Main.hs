@@ -1,10 +1,11 @@
-{-# LANGUAGE OverloadedStrings, RecordWildCards #-}
+{-# LANGUAGE OverloadedStrings, RecordWildCards, ScopedTypeVariables #-}
 module Main where
 import qualified Network.Slack.Api as Slack
 import Options.Applicative 
 import Control.Applicative
 import Network.HTTP.Types.URI (parseQuery)
 import qualified Data.ByteString.Char8 as B
+import qualified Data.ByteString.Lazy.Char8 as L8
 
 data Options = Options {
     token :: String
@@ -31,8 +32,10 @@ opts = info (helper <*> parseOptions)
 
 main = do
     Options{..} <- execParser opts
-    r <- Slack.request token endpoint params
-    print r
-    putStrLn "Done"
+    r :: Slack.SlackResponse <- Slack.request token endpoint params
+    case r of
+        Slack.Success bs -> L8.putStrLn bs
+        e -> error $ "response error" ++ show e
+    
 
 

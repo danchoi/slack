@@ -8,3 +8,7 @@ Invoke the client like this:
 
 This program is a work in progress.
     
+References
+
+http://hackage.haskell.org/package/websockets-0.9.6.1/docs/Network-WebSockets.html#t:ClientApp
+
